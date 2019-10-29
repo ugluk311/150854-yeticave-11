@@ -43,6 +43,21 @@ $product_info = [
         'url' => 'img/lot-6.jpg'
     ]
 ];
+function format_sum($num)
+{
+    $num_round = ceil($num);
+    $ruble_html = '<b class="rub">р</b>';
+    if ($num_round < 1000) {
+        return $num_round . $ruble_html;
+    } else {
+        $num_format = number_format($num_round, 0, '', ' ');
+        return $num_format . $ruble_html;
+
+    }
+}
+
+;
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -54,7 +69,6 @@ $product_info = [
 </head>
 <body>
 <div class="page-wrapper">
-
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
@@ -105,25 +119,26 @@ $product_info = [
                 <h2>Открытые лоты</h2>
             </div>
             <ul class="lots__list">
-                <?php foreach ( $product_info as $key => $val): ?>
-                <li class="lots__item lot">
-                    <div class="lot__image">
-                        <img src="<?= $val['url']?>" width="350" height="260" alt="">
-                    </div>
-                    <div class="lot__info">
-                        <span class="lot__category"><?= $val['category']?></span>
-                        <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $val['title']?></a></h3>
-                        <div class="lot__state">
-                            <div class="lot__rate">
-                                <span class="lot__amount">Стартовая цена</span>
-                                <span class="lot__cost"><?= $val['price']?><b class="rub">р</b></span>
-                            </div>
-                            <div class="lot__timer timer">
-                                12:23
+                <?php foreach ($product_info as $key => $val): ?>
+                    <li class="lots__item lot">
+                        <div class="lot__image">
+                            <img src="<?= $val['url'] ?>" width="350" height="260" alt="">
+                        </div>
+                        <div class="lot__info">
+                            <span class="lot__category"><?= $val['category'] ?></span>
+                            <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $val['title'] ?></a>
+                            </h3>
+                            <div class="lot__state">
+                                <div class="lot__rate">
+                                    <span class="lot__amount">Стартовая цена</span>
+                                    <span class="lot__cost"><?= format_sum($val['price']) ?></span>
+                                </div>
+                                <div class="lot__timer timer">
+                                    12:23
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </section>
@@ -134,9 +149,9 @@ $product_info = [
     <nav class="nav">
         <ul class="nav__list container">
             <?php foreach ($product_category as $key): ?>
-            <li class="nav__item">
-                <a href="pages/all-lots.html"><?= $key ?></a>
-            </li>
+                <li class="nav__item">
+                    <a href="pages/all-lots.html"><?= $key ?></a>
+                </li>
             <?php endforeach; ?>
         </ul>
     </nav>
