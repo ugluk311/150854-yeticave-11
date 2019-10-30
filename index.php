@@ -103,9 +103,9 @@ function format_sum($num)
             <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и
                 горнолыжное снаряжение.</p>
             <ul class="promo__list">
-                <?php foreach ($product_category as $key): ?>
+                <?php foreach ($product_category as $item): ?>
                     <li class="promo__item promo__item--boards">
-                        <a class="promo__link" href="pages/all-lots.html"><?= $key ?></a>
+                        <a class="promo__link" href="pages/all-lots.html"><?= $item ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>
