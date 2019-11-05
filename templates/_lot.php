@@ -11,8 +11,11 @@
                 <span class="lot__amount">Стартовая цена</span>
                 <span class="lot__cost"><?= format_sum($val['price']) ?></span>
             </div>
-            <div class="lot__timer timer">
-                12:23
+            <div class="lot__timer timer <?php $date_finish = get_time_left($val['date_finish']);
+            if ($date_finish[0] < 1) {
+                print('timer--finishing');
+            } ?>">
+                <?= implode(' : ',$date_finish) ?>
             </div>
         </div>
     </div>
