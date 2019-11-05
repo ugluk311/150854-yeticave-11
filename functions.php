@@ -18,7 +18,6 @@ function format_sum($num)
 
 function get_time_left(string $date)
 {
-    date_default_timezone_set("Europe/Moscow");
     $cur_date_ts = time();
     $end_date_ts = strtotime($date);
     $dif_date_ts = $end_date_ts - $cur_date_ts;
