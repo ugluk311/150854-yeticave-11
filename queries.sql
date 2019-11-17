@@ -87,10 +87,9 @@ SELECT category FROM categories;
 SELECT title, first_price, url_image, c.category,
 IFNULL((SELECT price FROM bets WHERE lot_id = l.id ORDER BY date_post DESC LIMIT 1), l.first_price) AS last_price
 FROM lots l
-JOIN bets b ON l.id = b.lot_id
 JOIN categories c ON l.category_id = c.id
 WHERE date_finish > NOW()
-ORDER BY b.date_post DESC;
+ORDER BY date_add DESC;
 
 -- Показываем лот по его id. Получите также название категории, к которой принадлежит лот;
 SELECT title, c.category FROM lots l
