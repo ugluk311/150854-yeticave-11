@@ -1,4 +1,4 @@
-// Добавляем данные в таблицу категорий
+-- Добавляем данные в таблицу категорий
 INSERT INTO categories
 (category, character_code) VALUES ('Доски и лыжи', 'boards');
 INSERT INTO categories
@@ -13,14 +13,14 @@ INSERT INTO categories
 (category, character_code) VALUES ('Разное', 'other');
 
 
-// Добавляем данные в таблицу пользователей
+-- Добавляем данные в таблицу пользователей
 INSERT INTO users
 (email, name, password, contact) VALUES ('john@gmail.ru', 'Джон', 'jOhn321', 'Skype: John');
 INSERT INTO users
 (email, name, password, contact) VALUES ('harry@gmail.ru', 'Гарри', 'hArry321', 'Skype: Harry');
 
 
-// Добавляем данные в таблицу объявлений
+-- Добавляем данные в таблицу объявлений
 INSERT INTO lots
 SET title = '2014 Rossignol District Snowboard',
     description = 'доска чемпионов',
@@ -71,7 +71,7 @@ SET title = 'Маска Oakley Canopy',
     category_id = 6;
 
 
-// Добавляем данные в таблицу ставок
+-- Добавляем данные в таблицу ставок
 INSERT INTO bets
 (price, user_id, lot_id) VALUES (6000, 1, 6);
 INSERT INTO bets
@@ -80,24 +80,28 @@ INSERT INTO bets
 
 
 
-// Получаем все категории
+-- Получаем все категории
 SELECT category FROM categories;
 
-// Получаем самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, текущую цену, название категории;
-SELECT title, first_price, url_image, b.price, c.category  FROM lots l
-JOIN bets b ON l.user_id = b.id
-JOIN categories c ON l.category_id = c.id;
+-- Получаем самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, текущую цену, название категории;
+SELECT title, first_price, url_image, c.category,
+IFNULL((SELECT price FROM bets WHERE lot_id = l.id ORDER BY date_post DESC LIMIT 1), l.first_price) AS last_price
+FROM lots l
+JOIN bets b ON l.id = b.lot_id
+JOIN categories c ON l.category_id = c.id
+WHERE date_finish > NOW()
+ORDER BY b.date_post DESC;
 
-//Показываем лот по его id. Получите также название категории, к которой принадлежит лот;
+-- Показываем лот по его id. Получите также название категории, к которой принадлежит лот;
 SELECT title, c.category FROM lots l
 JOIN categories c ON l.category_id = c.id
 WHERE l.id = 4;
 
-// Обновляем название лота по его идентификатору;
+-- Обновляем название лота по его идентификатору;
 UPDATE lots SET title = 'Maska'
 WHERE id = 6;
 
-// Получаем список ставок для лота по его идентификатору с сортировкой по дате.
+-- Получаем список ставок для лота по его идентификатору с сортировкой по дате.
 SELECT price, date_post FROM bets
 WHERE lot_id = 6
 ORDER BY date_post DESC;
