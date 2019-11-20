@@ -48,7 +48,7 @@
         <ul class="nav__list container">
             <?php foreach ($product_category as $item): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= htmlspecialchars($item) ?></a>
+                    <a href="pages/all-lots.html"><?= htmlspecialchars($item['category']) ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
