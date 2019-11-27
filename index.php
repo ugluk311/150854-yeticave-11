@@ -9,7 +9,7 @@ if (!$con_db) {
     $content = include_template('error.php', ['error' => $error]);
 } else {
     $sql = <<<SQL
-SELECT title, first_price, url_image, date_finish, c.category,
+SELECT l.id, title, first_price, url_image, date_finish, c.category,
 IFNULL((SELECT price FROM bets WHERE lot_id = l.id ORDER BY date_post DESC LIMIT 1), l.first_price) AS last_price
 FROM lots l
 JOIN categories c ON l.category_id = c.id
