@@ -1,4 +1,6 @@
 <?php
+require_once('helpers.php');
+
 $is_auth = rand(0, 1);
 
 $user_name = 'Евгений';
@@ -27,4 +29,49 @@ function get_time_left(string $date)
     $min_until_end = str_pad($min_until_end, 2, "0", STR_PAD_LEFT);
     return array($hours_until_end, $min_until_end);
 
+}
+
+function show_error(&$content, $error) {
+    $content = include_template('error.php', ['error' => $error]);
+}
+
+function validateCategory($id, $allowed_list) {
+    if (!in_array($id, $allowed_list)) {
+        return "Указана несуществующая категория";
+    }
+
+    return null;
+}
+
+function validateLength($value, $min, $max) {
+    if ($value) {
+        $len = strlen($value);
+        if ($len < $min or $len > $max) {
+            return "Значение должно быть от $min до $max символов";
+        }
+    }
+
+    return null;
+}
+
+
+function validateInt( $value){
+    $value = filter_var($value, FILTER_VALIDATE_INT);
+    if (!$value) {
+        return "Значение может быть только целым числом";
+    }
+    return null;
+}
+function validateDate($value){
+    $value = is_date_valid($value);
+    if (!$value) {
+        return "Введите дату завершения торгов в формате ГГГГ-ММ--ДД";
+    }
+    return null;
+}
+
+
+
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
 }
