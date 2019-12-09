@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $page_content = include_template('add.php',
             ['lot' => $lot, 'errors' => $errors, 'product_category' => $product_category]);
     } else {
-        $sql = 'INSERT INTO lots (date_add, title, category_id, description, first_price, bet_step, date_finish, url_image, user_id) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, 1)';
+        $sql = 'INSERT INTO lots (date_add, title, description, category_id, first_price, bet_step, date_finish, url_image, user_id) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, 1)';
 
         $statement = db_get_prepare_stmt($con_db, $sql, $lot);
         $result = mysqli_stmt_execute($statement);
@@ -99,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $lot_id = mysqli_insert_id($con_db);
 
             header("Location: lot.php?id=" . $lot_id);
+            die();
         } else {
             $error = mysqli_error($con_db);
             $page_content = include_template('error.php', ['error' => $error]);
