@@ -3,6 +3,9 @@ date_default_timezone_set("Europe/Moscow");
 require_once('functions.php');
 require_once('init.php');
 
+$tpl_data = [];
+
+
 if (!$con_db) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php', ['error' => $error]);
@@ -11,13 +14,13 @@ if (!$con_db) {
     $result = mysqli_query($con_db, $sql);
     if ($result) {
         $product_category = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $tpl_data['product_category'] = $product_category;
     } else {
         $error = mysqli_error($con_db);
         $page_content = include_template('error.php', ['error' => $error]);
     }
 };
 
-$tpl_data = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $form = $_POST;
@@ -32,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $email_val = filter_var($form['email'], FILTER_VALIDATE_EMAIL);
-    if (!$email_val){
-       $errors['email'] = "Введите корректный email";
+    if (!$email_val) {
+        $errors['email'] = "Введите корректный email";
     }
 
 
@@ -44,42 +47,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (mysqli_num_rows($res) > 0) {
             $errors[] = 'Пользователь с этим email уже зарегистрирован';
-        }
-        else {
+        } else {
             $password = password_hash($form['password'], PASSWORD_DEFAULT);
 
             $sql = 'INSERT INTO users (date_registration, email, name, password,  contact) VALUES (NOW(), ?, ?, ?, ?)';
-            $stmt = db_get_prepare_stmt($con_db, $sql, [$form['email'], $form['name'], $password, $form['contact'],  ]);
+            $stmt = db_get_prepare_stmt($con_db, $sql, [$form['email'], $form['name'], $password, $form['contact'],]);
             $res = mysqli_stmt_execute($stmt);
         }
 
         if ($res && empty($errors)) {
             header("Location: /enter.php");
-            exit();
+            die();
         }
 
     }
     $tpl_data['errors'] = $errors;
     $tpl_data['values'] = $form;
-    $tpl_data['product_category'] = $product_category;
-    $tpl_data['form'] = $form;
-    $page_content = include_template('sign-up.php', $tpl_data);
 
-}else {
+
+} else {
     $error = mysqli_error($con_db);
     $page_content = include_template('error.php', ['error' => $error]);
 }
 
 
-
-
-
-
-
+$page_content = include_template('sign-up.php', $tpl_data);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'product_category' => $product_category,
-    'title' => 'Yeticave - Добавить лот',
+    'title' => 'Yeticave - Регистрация',
     'is_auth' => $is_auth,
     'user_name' => $user_name,
 

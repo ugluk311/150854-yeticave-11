@@ -5,7 +5,6 @@
         <?php endforeach; ?>
     </ul>
 </nav>
-
 <form class="form container  <?php $classname = isset($errors) ? "form--invalid" : ""; ?><?=$classname?>" action="sign-up.php" method="post" autocomplete="off" enctype="multipart/form-data"> <!-- form
     --invalid -->
     <h2>Регистрация нового аккаунта</h2>
