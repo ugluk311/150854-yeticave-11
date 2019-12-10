@@ -70,6 +70,12 @@ function validateDate($value){
     return null;
 }
 
+function validateEmail($name) {
+    if (!filter_input(INPUT_POST, $name, FILTER_VALIDATE_EMAIL)) {
+        return "Введите корректный email";
+    }
+    return null;
+}
 
 
 function getPostVal($name) {
